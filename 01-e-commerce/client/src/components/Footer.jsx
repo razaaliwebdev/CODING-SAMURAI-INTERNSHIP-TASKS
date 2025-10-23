@@ -76,10 +76,7 @@ const Footer = () => {
             <ul className="space-y-3">
               {contactInfo.map(({ icon: Icon, text }) => (
                 <li key={text} className="flex items-start space-x-2">
-                  <Icon
-                    size={18}
-                    className="text-orange-400 mt-1 flex-shrink-0"
-                  />
+                  <Icon size={18} className="text-orange-400 mt-1" />
                   <span className="text-gray-800 text-sm leading-snug">
                     {text}
                   </span>

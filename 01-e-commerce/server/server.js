@@ -7,6 +7,7 @@ import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import cartRoutes from './routes/cartRoutes.js';
 import couponRoutes from './routes/couponRoutes.js';
+import paymentRuoutes from './routes/paymentRoute.js';
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -27,7 +28,8 @@ app.use(cors({
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
-app.use("/api/coupons",couponRoutes);
+app.use("/api/coupons", couponRoutes);
+app.use("/api/payments", paymentRuoutes);
 
 
 app.get("/", (req, res) => {

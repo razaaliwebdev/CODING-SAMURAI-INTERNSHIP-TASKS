@@ -166,7 +166,16 @@ export const refreshToken = async (req, res) => {
 export const userProfile = async (req, res) => {
     try {
 
-    } catch (error) {
+        const user = req.user;
 
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        return res.status(200).json(user);
+
+    } catch (error) {
+        console.log("Failed to get user profile", error);
+        return res.status(500).json({ success: false, message: "Internal server error" });
     }
 }

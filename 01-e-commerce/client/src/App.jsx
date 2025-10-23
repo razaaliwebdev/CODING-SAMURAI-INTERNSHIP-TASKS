@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import { useUserStore } from "./store/useUserStore";
 
 const App = () => {
@@ -43,6 +44,7 @@ const App = () => {
           />
         </Routes>
       </div>
+      <Footer />
     </div>
   );
 };

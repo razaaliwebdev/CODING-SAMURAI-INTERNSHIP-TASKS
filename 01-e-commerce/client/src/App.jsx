@@ -24,12 +24,15 @@ const App = () => {
   }
 
   return (
-    <div>
+    <div className="selection:bg-amber-400 selection:text-black">
       <Toaster />
       <Navbar />
       <div className="md:w-[92%] w-[96%] mx-auto">
         <Routes>
-          <Route path="/" element={user ? <Home /> : <Navigate to="/login" />} />
+          <Route
+            path="/"
+            element={user ? <Home /> : <Navigate to="/login" />}
+          />
           <Route
             path="/login"
             element={!user ? <Login /> : <Navigate to="/" />}

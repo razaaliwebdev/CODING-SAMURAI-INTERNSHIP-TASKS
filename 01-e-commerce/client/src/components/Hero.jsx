@@ -45,22 +45,3 @@ const Hero = () => {
 };
 
 export default Hero;
-
-// import React from "react";
-// import { assets } from "../assets/assets";
-
-// const Hero = () => {
-//   return (
-//     <section className="md:h-[90vh] md:w-full flex items-center justify-center bg-red-300 my-2">
-//       <div className="relative h-[95%] flex items-center justify-center w-full">
-//         <img
-//           src={assets.hero}
-//           alt="hero"
-//           className="h-full w-full object-cover bg-center"
-//         />
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default Hero;

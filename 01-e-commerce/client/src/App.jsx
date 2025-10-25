@@ -8,6 +8,7 @@ import Signup from "./pages/auth/Signup";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { useUserStore } from "./store/useUserStore";
+import Admin from "./pages/admin/Admin";
 
 const App = () => {
   const { user, checkUser, checkingAuth } = useUserStore();
@@ -30,10 +31,7 @@ const App = () => {
       <Navbar />
       <div className="md:w-[92%] w-[96%] mx-auto">
         <Routes>
-          <Route
-            path="/"
-            element={user ? <Home /> : <Navigate to="/login" />}
-          />
+          <Route path="/" element={<Home />} />
           <Route
             path="/login"
             element={!user ? <Login /> : <Navigate to="/" />}
@@ -41,6 +39,12 @@ const App = () => {
           <Route
             path="/signup"
             element={!user ? <Signup /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/admin-dashboard"
+            element={
+              user?.role === "admin" ? <Admin /> : <Navigate to="/login" />
+            }
           />
         </Routes>
       </div>

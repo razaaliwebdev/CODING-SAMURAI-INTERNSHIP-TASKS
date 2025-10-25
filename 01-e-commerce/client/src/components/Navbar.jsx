@@ -7,13 +7,15 @@ import {
   LogOut,
   ShoppingBasket,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useUserStore } from "../store/useUserStore";
 
 const Navbar = () => {
   let { user, logout } = useUserStore();
   let isAdmin = user?.role === "admin";
+
+  const navigate = useNavigate();
 
   return (
     <nav className="">
@@ -51,7 +53,10 @@ const Navbar = () => {
             </Link>
           )}
           {isAdmin && (
-            <button className="flex items-center gap-1 bg-linear-to-bl from-orange-400 to-orange-500 md:px-4 md:py-1.5 px-4 py-1 cursor-pointer hover:bg-linear-to-br hover:from-orange-400 hover:to-orange-500 rounded text-white ">
+            <button
+              onClick={() => navigate("/admin-dashboard")}
+              className="flex items-center gap-1 bg-linear-to-bl from-orange-400 to-orange-500 md:px-4 md:py-1.5 px-4 py-1 cursor-pointer hover:bg-linear-to-br hover:from-orange-400 hover:to-orange-500 rounded text-white "
+            >
               <Lock className="hidden sm:inline" size={15} />
               <span>Admin</span>
             </button>

@@ -53,9 +53,9 @@ export const getAllProducts = async (req, res) => {
         if (products.length === 0) return res.status(404).json({ success: false, message: "No products found" });
 
         return res.status(200).json({
+            products,
             success: true,
             message: "Products fetched successfully",
-            products
         })
     } catch (error) {
         console.log("Failed to get all products", error);
@@ -214,7 +214,7 @@ export const toggleFeatrureProduct = async (req, res) => {
         if (product) {
             product.isFeature = !product.isFeature;
             await product.save();
-            const updateProduct = await Product.save();
+            const updateProduct = await product.save();
 
             await updateFeaturedProductsCache();
 

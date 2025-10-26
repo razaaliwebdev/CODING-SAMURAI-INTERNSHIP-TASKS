@@ -37,7 +37,7 @@ const Admin = () => {
   return (
     <div>
       <div className="flex md:flex-row flex-col">
-        <div className="border-r border-orange-200 flex flex-col  md:w-1/5 w-1/2 md:h-screen px-4">
+        <div className="border-r border-orange-200 flex flex-col  md:w-1/5 w-full md:h-screen px-4">
           <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -46,17 +46,17 @@ const Admin = () => {
           >
             Admin Dashboard
           </motion.h1>
-          <div className="flex md:flex-col flex-row gap-4 w-full ">
+          <div className="flex md:flex-col md:justify-start md:items-start justify-center  mx-auto flex-row gap-4 w-full items-center  ">
             {tabs.map((tab) => {
               return (
                 <button
                   key={tab.id}
-                  className={`cursor-pointer flex items-center gap-2 border border-orange-400 md:px-6 md:py-2 px-4 py-1 rounded text-orange-500 hover:bg-orange-400 hover:text-white transition-all duration-500 ease-in my-2 ${
+                  className={`cursor-pointer flex items-center gap-2 border border-orange-400 md:px-6 md:py-2 px-4 py-1 rounded text-orange-500 hover:bg-orange-400 hover:text-white transition-all duration-500 ease-in my-2 w-full ${
                     activeTab === tab.id && "bg-orange-400 text-white"
                   }`}
                   onClick={() => setActiveTab(tab.id)}
                 >
-                  <tab.icon className="md:h-6 md:w-6" />
+                  <tab.icon className="md:h-6 md:w-6 hidden md:block" />
                   {tab.title}
                 </button>
               );

@@ -4,12 +4,12 @@ import { PlusCircle, Upload, Loader } from "lucide-react";
 import { useProductStore } from "../../store/useProductStore";
 
 const categories = [
-  "Aerospace & Defence",
-  "Medical & Implants",
-  "High-Performance Automotive",
-  "Industrial Tooling & Molds",
-  "Electronics & Housings",
-  "Energy & Fluid Control",
+  "aerospace",
+  "medical",
+  "high-performance",
+  "industrial",
+  "electronics",
+  "energy",
 ];
 
 const CreateProduct = () => {

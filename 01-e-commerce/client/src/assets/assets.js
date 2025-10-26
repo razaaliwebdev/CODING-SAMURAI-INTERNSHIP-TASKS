@@ -27,37 +27,37 @@ export const assets = {
 export const categories = [
     {
         id: 1,
-        name: "Aerospace & Defence",
+        name: "aerospace",
         image: aerospace,
         href: "/aerospace"
     },
     {
         id: 2,
-        name: "Medical & Implants",
+        name: "medical",
         image: medical,
         href: "/medical"
     },
     {
         id: 3,
-        name: "High-Performance Automotive",
+        name: "high-herformance",
         image: hpAuto,
         href: "/hp-auto"
     },
     {
         id: 4,
-        name: "Industrial Tooling & Molds",
+        name: "industrial",
         image: industrialTooling,
         href: "/industrial-tooling"
     },
     {
         id: 5,
-        name: "Electronics & Housings",
+        name: "electronics",
         image: housing,
         href: "/housing"
     },
     {
         id: 6,
-        name: "Energy & Fluid Control",
+        name: "energy",
         image: energy,
         href: "/energy"
     }

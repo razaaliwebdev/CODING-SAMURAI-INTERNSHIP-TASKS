@@ -9,6 +9,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { useUserStore } from "./store/useUserStore";
 import Admin from "./pages/admin/Admin";
+import Category from "./pages/category/Category";
 
 const App = () => {
   const { user, checkUser, checkingAuth } = useUserStore();
@@ -46,6 +47,7 @@ const App = () => {
               user?.role === "admin" ? <Admin /> : <Navigate to="/login" />
             }
           />
+          <Route path="/category/:category" element={<Category />} />
         </Routes>
       </div>
       <Footer />

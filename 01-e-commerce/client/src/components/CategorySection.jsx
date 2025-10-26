@@ -19,15 +19,7 @@ const CategorySection = () => {
             key={category.id}
             className="group relative overflow-hidden h-80 rounded-xl shadow-xl transition duration-500 ease-in-out transform hover:shadow-2xl hover:-translate-y-1 cursor-pointer"
           >
-            <Link
-              to={
-                "/category/" +
-                category.name
-                  .toLowerCase()
-                  .replace(/ & /g, "-")
-                  .replace(/ /g, "-")
-              }
-            >
+            <Link to={"/category/" + category.name.toLowerCase()}>
               {/* Image Container with Hover Scaling */}
               <img
                 src={category.image}

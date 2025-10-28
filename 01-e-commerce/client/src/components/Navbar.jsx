@@ -10,12 +10,15 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useUserStore } from "../store/useUserStore";
+import { useCartStore } from "../store/useCartStore";
 
 const Navbar = () => {
   let { user, logout } = useUserStore();
   let isAdmin = user?.role === "admin";
 
   const navigate = useNavigate();
+
+  const { cart } = useCartStore();
 
   return (
     <nav className="">
@@ -48,7 +51,7 @@ const Navbar = () => {
             >
               <ShoppingBasket />
               <span className="quantity absolute -top-3 -right-3 text-xs bg-linear-to-bl from-orange-400 to-orange-500 h-4 w-4 rounded-full text-white flex items-center justify-center ">
-                0
+                {cart.length}
               </span>
             </Link>
           )}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Cog,
   UserPlus,
@@ -18,7 +18,13 @@ const Navbar = () => {
 
   const navigate = useNavigate();
 
-  const { cart } = useCartStore();
+  const { cart, getCartItems } = useCartStore();
+
+  useEffect(() => {
+    if (user) {
+      getCartItems();
+    }
+  }, [user, getCartItems]);
 
   return (
     <nav className="">

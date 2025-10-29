@@ -140,43 +140,42 @@ export const deleteProduct = async (req, res) => {
 };
 
 
-// Get  Recommended Products Controller
+
+// Get Recommended Products Controller
 export const getRecommendedProducts = async (req, res) => {
     try {
+        const products = await Product.aggregate([
+            { $sample: { size: 3 } }, // randomly pick 3 products
+            {
+                $project: {
+                    _id: 1,
+                    name: 1,
+                    description: 1,
+                    image: 1,
+                    price: 1,
+                },
+            },
+        ]);
 
-        const products = await Product.aggregate(
-            [
-                {
-                    $sample: {
-                        size: 3
-                    },
-                    $project: {
-                        _id: 1,
-                        name: 1,
-                        description: 1,
-                        image: 1,
-                        price: 1
-                    }
-                }
-            ]
-        );
-
-        if (products.length === 0) return res.status(404).json({ success: false, message: "No products found" });
+        if (products.length === 0)
+            return res
+                .status(404)
+                .json({ success: false, message: "No products found" });
 
         return res.status(200).json({
             success: true,
             message: "Products fetched successfully",
-            products
-        })
-
+            products,
+        });
     } catch (error) {
         console.log("Failed to fetch recommended products", error);
         return res.status(500).json({
             success: false,
-            message: "Internal server error"
-        })
+            message: "Internal server error",
+        });
     }
-}
+};
+
 
 
 // Get Products By Categories

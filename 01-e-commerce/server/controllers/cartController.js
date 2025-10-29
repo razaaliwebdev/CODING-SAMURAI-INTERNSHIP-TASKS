@@ -2,7 +2,7 @@ import Product from "../models/productModel.js";
 import User from '../models/userModel.js';
 
 
-// Add product to cart
+
 export const addToCart = async (req, res) => {
     try {
         const { productId } = req.body;
@@ -108,41 +108,61 @@ export const removeAllFromCart = async (req, res) => {
     }
 }
 
-// Update Quantity Controller 
+
+
+// Update Quantity Controller
 export const updateQuantity = async (req, res) => {
     try {
-        const { id } = req.params; // id = productId
-
+        const { productId } = req.params; // productId from URL
         const { quantity } = req.body;
+        const userId = req.user._id; // JWT decoded user id
 
-        const user = req.user;
+        // ✅ Fetch actual user document from DB
+        const user = await User.findById(userId);
 
-        const existingItem = user.cartItems.find((item) => item.product.toString() === id);
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+
+        const existingItem = user.cartItems.find(
+            (item) => item.product.toString() === productId
+        );
 
         if (existingItem) {
+            // ✅ If quantity is 0, remove the item
             if (quantity <= 0) {
-                user.cartItems = user.cartItems.filter((item) => item.product.toString() !== id);
-                await user.save();
-
-                const updatedUser = await User.findById(user._id).populate("cartItems.product");
-                return res.status(200).json({ cartItems: updatedUser.cartItems });
+                user.cartItems = user.cartItems.filter(
+                    (item) => item.product.toString() !== productId
+                );
+            } else {
+                existingItem.quantity = quantity;
             }
-            existingItem.quantity = quantity;
+
             await user.save();
-            const updatedUser = await User.findById(user._id).populate("cartItems.product");
-            return res.status(200).json({ cartItems: updatedUser.cartItems });
+
+            const updatedUser = await User.findById(userId).populate(
+                "cartItems.product"
+            );
+
+            return res.status(200).json({
+                success: true,
+                message: "Cart updated successfully",
+                cartItems: updatedUser.cartItems,
+            });
         } else {
             return res.status(404).json({
                 success: false,
-                messag: "Items not found in the cart."
-            })
+                message: "Item not found in the cart",
+            });
         }
-
     } catch (error) {
         console.log("Error in update quantity", error);
         return res.status(500).json({
             success: false,
-            message: "Internal server error"
-        })
+            message: "Internal server error",
+        });
     }
-}
+};

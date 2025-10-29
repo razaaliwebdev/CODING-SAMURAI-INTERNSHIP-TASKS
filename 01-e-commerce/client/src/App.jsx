@@ -10,6 +10,7 @@ import Footer from "./components/Footer";
 import { useUserStore } from "./store/useUserStore";
 import Admin from "./pages/admin/Admin";
 import Category from "./pages/category/Category";
+import Cart from "./pages/cart/Cart";
 
 const App = () => {
   const { user, checkUser, checkingAuth } = useUserStore();
@@ -48,6 +49,11 @@ const App = () => {
             }
           />
           <Route path="/category/:category" element={<Category />} />
+
+          <Route
+            path="/cart"
+            element={user ? <Cart /> : <Navigate to="/login" />}
+          />
         </Routes>
       </div>
       <Footer />

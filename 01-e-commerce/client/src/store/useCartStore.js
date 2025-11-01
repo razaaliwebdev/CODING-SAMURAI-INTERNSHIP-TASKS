@@ -94,6 +94,26 @@ export const useCartStore = create((set, get) => ({
 
         set({ subTotal, total });
     },
+
+    clearCart: async () => {
+        try {
+            // Clear cart on the server using the correct endpoint with empty body
+            await axiosInstance.delete('/cart', { data: {} });
+            // Reset local state
+            set({ 
+                cart: [], 
+                coupon: null, 
+                total: 0, 
+                subTotal: 0,
+                isCouponApplied: false 
+            });
+        } catch (error) {
+            console.error("Error clearing cart:", error);
+            const message = error.response?.data?.message || "Failed to clear cart.";
+            toast.error(message);
+        }
+    },
 }));
+
 
 

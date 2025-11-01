@@ -6,118 +6,138 @@ import { createNewCoupon } from '../utils/createNewCoupon.js';
 
 
 
-// createCheckoutSession Controller
+
+
+
 export const createCheckoutSession = async (req, res) => {
     try {
-
-        const { products, couponCode } = req.body
+        const { products, couponCode } = req.body;
 
         if (!Array.isArray(products) || products.length === 0) {
             return res.status(400).json({
                 success: false,
-                message: "No products found in the cart"
-            })
-        };
+                message: "No products found in the cart",
+            });
+        }
 
-        let totalAmount = 0;
+        // console.log("🧾 Incoming Products:", products);
 
-        const lineItems = products.map((product) => {
-            const amount = Math.round(product.price * 100);   // Stripe want you to send in the format of cents
-            totalAmount += amount * product.quantity;
+        // --- FIX 1: Prepare lightweight product data for metadata ---
+        const lightweightProducts = products.map((item) => {
+            const product = item.product || item; // handle nested object case
+            const price = parseFloat(product.price);
+
+            if (isNaN(price)) {
+                throw new Error(`Invalid price for product: ${product.name}`);
+            }
+
+            // Store only essential data to avoid hitting Stripe's metadata size limit
+            return {
+                id: product._id,
+                quantity: item.quantity,
+                price: price
+            };
+        });
+
+        // ✅ Build Stripe line items
+        const lineItems = products.map((item) => {
+            const product = item.product || item; // handle nested object case
+            const price = parseFloat(product.price);
 
             return {
                 price_data: {
                     currency: "usd",
                     product_data: {
                         name: product.name,
-                        images: [product.image]
+                        images: [product.image],
                     },
-                    unit_amount: amount
-                }
-            }
+                    unit_amount: Math.round(price * 100), // cents
+                },
+                quantity: item.quantity,
+            };
         });
 
-        let coupon = null;
-        if (couponCode) {
-            coupon = await Coupon.findOne({ code: couponCode, userId: User._id, isActive: true });
-            if (coupon) {
-                totalAmount -= Math.round(totalAmount * coupon.discountPercentage / 100);
-            }
-        };
+        // ✅ Create Stripe session
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ["card"],
+            line_items: lineItems,
+            mode: "payment",
+            success_url: `${process.env.CLIENT_URL}/purchase-success?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${process.env.CLIENT_URL}/purchase-cancel`,
+            metadata: {
+                userId: req.user?._id?.toString() || "guest",
+                // FIX 2: Store the lightweight product array as a JSON string
+                products: JSON.stringify(lightweightProducts),
+                couponCode: couponCode || undefined, // Store coupon code if present
+            },
+        });
 
-        const session = await stripe.checkout.sessions.create(
-            {
-                payment_method_types: ["cart"],
-                line_items: lineItems,
-                mode: "payment",
-                success_url: `${process.env.CLIENT_URL}/purchase-success?session_id={CHECKOUT_SESSION_ID}`,
-                cancel_url: `${process.env.CLIENT_URL}/purchase-cancel`,
-                discounts: coupon ? [
-                    {
-                        coupon: await createStripeCoupon(coupon.discountPercentage)
-                    }
-                ] : [],
-                metadata: {
-                    userId: req.user._id.toString(),
-                    couponCode: couponCode || "",
-                    products: JSON.stringify(
-                        products.map((p) => ({
-                            id: p._id,
-                            quantity: p.quantity,
-                            price: p.price
-                        }))
-                    )
-                }
-            }
-        );
-
-        if (totalAmount >= 20000) {
-            await createNewCoupon(req.user._id);
-        }
-
+        // ✅ Send URL to frontend
         return res.status(200).json({
-            id: session.id,
-            totalAmount: totalAmount / 100
+            success: true,
+            url: session.url,
         });
-
     } catch (error) {
-        console.log("Failed to create checkout session", error);
-        return res.status(500).json({ success: false, message: "Internal server error" });
+        console.error("Failed to create checkout session", error);
+        return res.status(500).json({
+            success: false,
+            message: error.message || "Internal server error",
+        });
     }
-}
+};
 
 
-// Checkout Success Controller
+
 export const checkoutSuccess = async (req, res) => {
     try {
+        // 1. FIX: Extract the Session ID safely (Handles previous [object Object] error)
+        const { sessionId } = req.body;
 
-        const sessionId = req.body;
+        if (!sessionId) {
+            return res.status(400).json({
+                success: false,
+                message: "Missing Stripe Session ID in request body."
+            });
+        }
 
-        const session = await stripe.checkout.session.retrieve(sessionId);
+        // 2. Retrieve the Stripe session
+        const session = await stripe.checkout.sessions.retrieve(sessionId);
 
+        // 3. Check for payment and handle coupon
         if (session.payment_status === "paid") {
             if (session.metadata.couponCode) {
                 await Coupon.findOneAndUpdate(
                     {
-                        code: session.metadata.couponCode, userId: session.metadata.userId
+                        code: session.metadata.couponCode,
+                        userId: session.metadata.userId
                     },
                     { isActive: false }
-                )
+                );
             }
         };
 
-        // Create new order
-        const products = JSON.parse(session.metadata.products);
+        // 4. FIX: Safely parse the product data from metadata (Handles "undefined" is not valid JSON error)
+        let products = [];
+        const productsMetadata = session.metadata.products;
 
+        if (productsMetadata) {
+            // This now safely parses the JSON string created in createCheckoutSession
+            products = JSON.parse(productsMetadata);
+        } else {
+            // Fallback/Error log for missing product data
+            console.error("CRITICAL ERROR: Products array not found in session metadata. Order may be incomplete.");
+        }
+
+        // 5. Create new order
         const newOrder = await Order.create({
             user: session.metadata.userId,
             products: products.map((product) => ({
+                // Using the lightweight structure: {id, quantity, price}
                 product: product.id,
                 quantity: product.quantity,
                 price: product.price
             })),
             totalAmount: session.amount_total / 100,
-            // paymentIntent: session.amount_intent,
             stripeSessionId: sessionId
         });
 
@@ -128,7 +148,8 @@ export const checkoutSuccess = async (req, res) => {
         });
 
     } catch (error) {
-        console.log("Failed to create checkout session", error);
+        // Log the actual error for debugging
+        console.error("Failed to process checkout success:", error.message);
         return res.status(500).json({ success: false, message: "Internal server error" });
     }
-}
+};

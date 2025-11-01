@@ -15,22 +15,6 @@ const OrderSummary = () => {
   const formattedSubTotal = subTotal.toFixed(2);
   const formattedSavings = savings.toFixed(2);
 
-  // const handleStripPayment = async () => {
-  //   const stripe = await stripePromise;
-  //   const res = await axiosInstance.post(`/payments/create-checkout-session`, {
-  //     products: cart,
-  //     coupon: coupon ? coupon.code : null,
-  //   });
-
-  //   const session = res.data;
-  //   const result = await stripe.redirectToCheckout({ sessionId: session.id });
-  //   if(result.error){
-  //     console.log(result.error.message);
-  //   }
-  // };
-
-  // OrderSummary.jsx (or wherever handleStripPayment is located)
-
   const handleStripPayment = async () => {
     // 1. Get the session data and URL from your server
     const res = await axiosInstance.post(`/payments/create-checkout-session`, {
@@ -52,7 +36,7 @@ const OrderSummary = () => {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5, delay: 0.4 }}
-      className="m-12 border h-55 w-sm border-gray-400 p-4 rounded hover:border-orange-400 hover:shadow-sm"
+      className="m-12 border h-55 sm:w-sm w-xs mx-auto border-gray-400 p-4 rounded hover:border-orange-400 hover:shadow-sm"
     >
       <h4 className="text-lg font-medium text-center text-gray-600">
         Order Summary

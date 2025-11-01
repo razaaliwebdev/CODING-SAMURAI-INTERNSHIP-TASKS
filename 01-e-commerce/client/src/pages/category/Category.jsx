@@ -8,10 +8,13 @@ const Category = () => {
   const { getProductsByCategory, products } = useProductStore();
 
   const { category } = useParams();
+  const productList = Array.isArray(products)
+    ? products
+    : products?.products || [];
 
   useEffect(() => {
     getProductsByCategory(category);
-  }, [getProductsByCategory]);
+  }, [category, getProductsByCategory]);
 
   console.log(products);
 
@@ -37,7 +40,7 @@ const Category = () => {
           </motion.h2>
         )}
         <div className="grid grid-cols-1 md:my-8 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products.map((product) => (
+          {productList.map((product) => (
             <Product key={product._id} product={product} />
           ))}
         </div>

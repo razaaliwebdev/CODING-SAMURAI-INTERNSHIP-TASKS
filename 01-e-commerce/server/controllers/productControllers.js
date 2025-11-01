@@ -66,45 +66,6 @@ export const getAllProducts = async (req, res) => {
     }
 }
 
-// Featured Products Controller
-// export const getFeaturedProducts = async (req, res) => {
-//     try {
-
-//         let featureProducts = await redis.get("featured_products");
-//         if (featureProducts) {
-//             return res.status(200).json({
-//                 success: true,
-//                 message: "Products fetched successfully",
-//                 products: JSON.parse(featureProducts)
-//             })
-//         };
-
-//         // If not in Redis , fetch from the MONGODB
-//         featureProducts = await Product.find({ isFeature: true }).lean();
-
-//         if (!featureProducts) {
-//             return res.status(404).json({
-//                 message: 'No feature products found'
-//             })
-//         };
-
-//         // Store in REDIS for future quick access.
-//         await redis.set("featured_products", JSON.stringify(featureProducts));
-
-//         return res.status(200).json({
-//             success: true,
-//             message: "Products fetched successfully",
-//             products: featureProducts
-//         })
-
-//     } catch (error) {
-//         console.log("Failed to get featured products", error);
-//         return res.status(500).json({
-//             success: false,
-//             message: "Internal server error"
-//         })
-//     }
-// }
 
 // Featured Products Controller
 export const getFeaturedProducts = async (req, res) => {

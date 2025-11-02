@@ -16,7 +16,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="flex items-center justify-between py-4 sticky px-2.5 top-0">
+    <nav className="flex items-center justify-between py-4 sticky px-2.5 top-0 backdrop:blur-2xl z-50  ">
       <div
         className="logo h-10 w-10 rounded-full bg-secondary flex items-center justify-center text-primary cursor-pointer font-semibold text-lg"
         onClick={() => navigate("/")}

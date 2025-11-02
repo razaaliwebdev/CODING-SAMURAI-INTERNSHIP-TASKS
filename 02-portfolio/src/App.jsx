@@ -5,7 +5,7 @@ import Navbar from "./components/Navbar";
 
 const App = () => {
   return (
-    <div className="md:w-[90%] w-[95%] mx-auto">
+    <div className="md:w-[90%] w-[96%] mx-auto">
       <Navbar />
 
       <Routes>

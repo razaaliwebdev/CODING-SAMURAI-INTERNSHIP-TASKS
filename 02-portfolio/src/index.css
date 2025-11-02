@@ -2,4 +2,30 @@
 
 
 
+/* Define light and dark veriables */
+@theme {
+    --color-bg: #F8FAFC;
+    --color-surface: #FFFFFF;
+    --color-text: #1E293B;
+    --color-primary: #3B82F6;
+    --color-secondary: #D2E2FA;
+    --color-muted: #475569;
+    --color-field: #F1F5F9;
 
+}
+
+.dark {
+    --color-bg: #0F172A;
+    --color-surface: #162033;
+    --color-text: #FFFFFF;
+    --color-primary: #06B6D4;
+    --color-secondary: #0D364B;
+    --color-muted: #B8C2CE;
+    --color-field: #11192C;
+
+}
+
+/* Transition */
+* {
+    transition: background-color .3s ease, color .3s ease;
+}

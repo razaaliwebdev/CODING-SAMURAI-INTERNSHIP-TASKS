@@ -25,12 +25,14 @@ const Navbar = () => {
       </div>
       <div className="links md:flex items-center hidden md:gap-6">
         <Link
+          id="about"
           className="text-text text-sm md:text-[16px] hover:text-primary"
           to="/#about"
         >
           About
         </Link>
         <Link
+          id="projects"
           className="text-text text-sm md:text-[16px] hover:text-primary"
           to="/#projects"
         >

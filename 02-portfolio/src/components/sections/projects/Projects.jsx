@@ -11,7 +11,7 @@ const Projects = () => {
     <section id="projects" className="md:py-8 py-6">
       <h2 className="text-text md:text-3xl font-medium">Projects</h2>
       <div className="tabs">
-        <div className="tabs-btns flex gap-4 my-6">
+        <div className="tabs-btns flex gap-4 my-6 flex-wrap">
           <button
             className={`tab-btn border border-primary px-6 text-text cursor-pointer py-1.5 rounded-full ${
               activeTab === "All" && "active-tab bg-primary "

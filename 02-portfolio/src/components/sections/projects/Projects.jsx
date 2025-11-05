@@ -1,8 +1,8 @@
 import { useState } from "react";
-import All from "./projects/All";
-import Frontend from "./projects/Frontend";
-import Backend from "./projects/Backend";
-import FullStack from "./projects/FullStack";
+import All from "./All";
+import Frontend from "./Frontend";
+import Backend from "./Backend";
+import FullStack from "./FullStack";
 
 const Projects = () => {
   const [activeTab, setActiveTab] = useState("All");

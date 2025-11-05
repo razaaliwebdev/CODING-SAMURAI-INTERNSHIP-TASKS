@@ -111,3 +111,58 @@ export const projectsData = [
         technologies: ["React", "Node.js", "Express", "MongoDB", "Zod"],
     },
 ];
+
+
+// Skills Data 
+export const skillsData = [
+    {
+        id: 1,
+        skll: "HTML",
+        percentage: "85%"
+    },
+    {
+        id: 2,
+        skll: "CSS",
+        percentage: "85%"
+    },
+    {
+        id: 3,
+        skll: "Tailwind CSS",
+        percentage: "85%"
+    },
+    {
+        id: 4,
+        skll: "JavaScript",
+        percentage: "85%"
+    },
+    {
+        id: 5,
+        skll: "React Js",
+        percentage: "85%"
+    },
+    {
+        id: 6,
+        skll: "Node Js",
+        percentage: "85%"
+    },
+    {
+        id: 7,
+        skll: "Express Js",
+        percentage: "85%"
+    },
+    {
+        id: 8,
+        skll: "MongoDb",
+        percentage: "85%"
+    },
+    {
+        id: 9,
+        skll: "Git",
+        percentage: "85%"
+    },
+    {
+        id: 10,
+        skll: "Vercel",
+        percentage: "85%"
+    }
+]

@@ -40,7 +40,7 @@ const About = () => {
           return (
             <div
               key={card.id}
-              className="border border-muted p-4 rounded-xl bg-surface flex flex-col items-center md:items-start "
+              className="border border-secondary p-4 rounded-xl bg-surface flex flex-col items-center md:items-start "
             >
               <h3 className="text-primary md:text-4xl text-2xl font-bold ">
                 {card.value}
